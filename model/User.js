@@ -4,11 +4,13 @@ const UsersSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            require: true
+            require: true,
+            index: true
         },
         email: {
             type: String,
-            unique: true
+            unique: true,
+            index: true
         },
         numberPhone: {
             type:Number,

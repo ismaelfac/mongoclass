@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const PublicationsSchema = new mongoose.Schema(
     {
         title: {
-            type:String
+            type:String, 
+            index: true 
         },
         description: {
             type: String
@@ -13,7 +14,8 @@ const PublicationsSchema = new mongoose.Schema(
         },
         categories: {
             type: Array,
-            default: []
+            default: [],
+            index: true
         }
     },
     {
