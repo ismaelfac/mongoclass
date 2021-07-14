@@ -53,31 +53,49 @@ const CreatePublications = () => {
             title: 'Post 1',
             description: 'Description Post 1',
             author: mongoose.Types.ObjectId("60edcd88c4546228ece1c37f"),
-            categories: ["Salud"]
+            categories: ["Salud"],
+            likes: '20',
+            isActive: true
         },
         {
             title: 'Post 2',
             description: 'Description Post 2',
             author: mongoose.Types.ObjectId("60edcd88c4546228ece1c380"),
-            categories: ["Tech"]
+            categories: ["Tech"],
+            likes: '40',
+            isActive: true
         },
         {
             title: 'Post 3',
             description: 'Description Post 3',
             author: mongoose.Types.ObjectId("60edcd88c4546228ece1c381"),
-            categories: ["Salud"]
+            categories: ["Salud"],
+            likes: '10',
+            isActive: false
         },
         {
             title: 'Post 4',
             description: 'Description Post 4',
             author: mongoose.Types.ObjectId("60edcd88c4546228ece1c381"),
-            categories: ["Tech"]
+            categories: ["Tech"],
+            likes: '30',
+            isActive: true
         },
         {
             title: 'Post 5',
             description: 'Description Post 5',
             author: mongoose.Types.ObjectId("60edcd88c4546228ece1c380"),
-            categories: ["Salud"]
+            categories: ["Salud"],
+            likes: '60',
+            isActive: true
+        },
+        {
+            title: 'Post 6',
+            description: 'Description Post 6',
+            author: mongoose.Types.ObjectId("60edcd88c4546228ece1c380"),
+            categories: ["Tech"],
+            likes: '50',
+            isActive: false
         },
     ]
 
@@ -164,7 +182,7 @@ const ListCategoriesWithPublications = async () => {
             $lookup: {
                 from: "publications",
                 let: {
-                    asNameCategory: "$name" //obtener e nombre de la categoria
+                    asNameCategory: "$name" //obtener el nombre de la categoria
                 },
                 pipeline: [
                     {
@@ -182,4 +200,28 @@ const ListCategoriesWithPublications = async () => {
     ]);
     console.log('******* Result ********',result);
 }
-ListCategoriesWithPublications();
+//ListCategoriesWithPublications();
+
+// :CANALIZACION POR TUBERIAS
+const FilterPublicationsWithStatesAndoptions = async () => {
+    const result = await publications.aggregate([
+        {
+            $lookup: {
+                from: "publications",
+                pipeline: [
+                    {
+                        $match:  {
+                            isActive: true
+                        }
+                    },
+                    { $group: { _id: "$author", totalLikes: { $sum: "$likes" } } }
+                ],
+                as: "NumbersLikesForAuthor"
+            }
+        },
+        {   $unwind: "$NumbersLikesForAuthor"},
+    ]);
+    console.log('******* Result ********',result);
+}
+
+FilterPublicationsWithStatesAndoptions();

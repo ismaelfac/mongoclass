@@ -16,6 +16,13 @@ const PublicationsSchema = new mongoose.Schema(
             type: Array,
             default: [],
             index: true
+        },
+        likes: {
+            type: String
+        },
+        isActive: {
+            type: Boolean,
+            index: true
         }
     },
     {
