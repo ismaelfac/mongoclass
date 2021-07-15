@@ -18,7 +18,7 @@ const PublicationsSchema = new mongoose.Schema(
             index: true
         },
         likes: {
-            type: String
+            type: Number
         },
         isActive: {
             type: Boolean,

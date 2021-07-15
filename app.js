@@ -203,25 +203,14 @@ const ListCategoriesWithPublications = async () => {
 //ListCategoriesWithPublications();
 
 // :CANALIZACION POR TUBERIAS
-const FilterPublicationsWithStatesAndoptions = async () => {
+const FilterPublicationsWithStatesAndOptions = async () => {
     const result = await publications.aggregate([
         {
-            $lookup: {
-                from: "publications",
-                pipeline: [
-                    {
-                        $match:  {
-                            isActive: true
-                        }
-                    },
-                    { $group: { _id: "$author", totalLikes: { $sum: "$likes" } } }
-                ],
-                as: "NumbersLikesForAuthor"
-            }
+            $match: { isActive: true }
         },
-        {   $unwind: "$NumbersLikesForAuthor"},
+        { $group: { _id: "$author", totalLikes: { $sum: "$likes" } } }
     ]);
     console.log('******* Result ********',result);
 }
 
-FilterPublicationsWithStatesAndoptions();
+FilterPublicationsWithStatesAndOptions();
