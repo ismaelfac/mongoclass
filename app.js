@@ -2,20 +2,8 @@ const mongoose = require('mongoose');
 const { users } = require('./model/User');
 const { publications } = require('./model/Publication');
 const { categories } = require('./model/Category');
+const { mongo } = require('./databases/config');
 
-const DB_URI = 'mongodb://localhost:27017/app_youtube_blog';
-
-mongoose.connect(DB_URI, {
-    useNewUrlParser: true, 
-    useUnifiedTopology: true, 
-    useCreateIndex: true
-}, err => {
-    if(err) {
-        console.log('****** Conexion Errada *******');
-    }else{
-        console.log('****** Conexion Exitosa *******');
-    }
-});
 
 const CreateCategory = () => {
     categories.create(
@@ -213,4 +201,14 @@ const FilterPublicationsWithStatesAndOptions = async () => {
     console.log('******* Result ********',result);
 }
 
-FilterPublicationsWithStatesAndOptions();
+//FilterPublicationsWithStatesAndOptions();
+
+//: METODO DE AGREGACION DE PROPOSITO UNICO
+
+const FilterPublicationsWithStateActiveAndOptions = async () => {
+    const result = await publications.distinct('title', {
+        author: mongoose.Types.ObjectId("60edcd88c4546228ece1c37f")
+    });
+    console.log('****** Result ***********',result);
+}
+FilterPublicationsWithStateActiveAndOptions();
